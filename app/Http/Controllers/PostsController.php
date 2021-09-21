@@ -147,7 +147,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $post = Post::find($id);
+        return view('bbs.edit', ['post' => $post]);
     }
 
     /**
@@ -159,7 +161,22 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $request->validate(['title' => 'required|min:3', 'content' => 'required|min:10']);
+        $post = Post::find($id);
+
+
+        $post->title = $request->title;
+        $post->content = $request->content;
+
+
+        // if ($request->image) {
+        //     $post->image  = $request->image;
+        // } 
+        //수정했을때도 이미지 남아있을 필요 o
+        $post->save();
+
+        return redirect()->route('posts.show', ['post' => $post]);
     }
 
     /**
@@ -168,8 +185,12 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($post)
     {
-        //
+
+        $post = Post::find($post);
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 }
