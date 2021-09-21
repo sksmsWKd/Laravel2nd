@@ -41,12 +41,34 @@
                 <li class="list-group-item"> 작성자 : {{ $post->writer->name }}</li>
             </ul>
 
-            <div class="card-body">
-                <a href="#" class="card-link">수정하기</a>
-                <a href="#" class="card-link">삭제하기</a>
+            <div class="card-body flex justify-center ">
+                <a class="mr-20" href="{{ route('posts.edit', ['post' => $post->id]) }}">수정하기</a>
+                <form onsubmit="return confirmDelete()" id="form" method="POST"
+                    action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                    @method('delete')
+                    @csrf
+                    {{-- 서버에서 처리. html 을 웹브라우저에 보냄. --}}
+
+                    <button type="submit">
+                        삭제하기
+                    </button>
+
+                </form>
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDelete() {
+            if (confirm("삭제??") == true) {
+                return true;
+                alert('삭제완료');
+            } else {
+                return false;
+                alert('삭제불가능');
+            }
+        }
+    </script>
 
 
 </x-app-layout>
