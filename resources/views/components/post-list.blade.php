@@ -1,4 +1,4 @@
-<div class="m-4 p-4">
+<div class="ml-20 mr-20 pl-20 pr-20">
     <h1>나의 이름은 {{ $name }}입니다. </h1>
     <table class="table table-hover">
         <thead>
@@ -17,5 +17,4 @@
         </tbody>
     </table>
     {{ $posts->links() }}
-</div>
 </div>
