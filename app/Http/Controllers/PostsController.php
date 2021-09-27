@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use PDO;
 
 class PostsController extends Controller
@@ -137,6 +138,7 @@ class PostsController extends Controller
 
         return view('bbs.show', ['post' => $post]);
         //pk 로 찾음.
+
     }
 
     /**
@@ -152,6 +154,8 @@ class PostsController extends Controller
         return view('bbs.edit', ['post' => $post]);
     }
 
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -159,38 +163,73 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+
+    public function update(Request $request, $post)
     {
+        switch ($request->input('action')) {
+            case 'save':
+                $request->validate(['title' => 'required|min:3', 'content' => 'required|min:10']);
+                //required 는 있어야합니다.
 
-        $request->validate(['title' => 'required|min:3', 'content' => 'required|min:10']);
-        $post = Post::find($id);
+                $post = Post::find($post);
 
+                // $post->title = $request->input['title'];
+                $post->title = $request->title;
+                //둘다 같음.
 
-        $post->title = $request->title;
-        $post->content = $request->content;
+                $post->content = $request->content;
+                // $post->image = $request->image;
 
+                if ($request->image) {
+                    //수정했을때도 이미지 남아있을 필요 o
+                    //원본도 지울필요 o
+                    if ($post->image) {
+                        Storage::delete('public/images/' . $post->image);
+                    }
 
-        // if ($request->image) {
-        //     $post->image  = $request->image;
-        // } 
-        //수정했을때도 이미지 남아있을 필요 o
-        $post->save();
+                    $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
+                    $post->image = $fileName;
+                    $request->image->storeAs('public/images/', $fileName);
+                }
 
-        return redirect()->route('posts.show', ['post' => $post]);
+                $post->save();
+
+                return redirect()->route('posts.show', ['post' => $post]);
+
+                //라우트는 파일위치 ㄴㄴ 라우트이름.
+                break;
+
+            case 'delete':
+                $post = Post::find($post);
+
+                Storage::delete('public/images/' . $post->image);
+
+                $post->title = $request->title;
+                $post->content = $request->content;
+                $post->image = $request->image;
+
+                $post->save();
+
+                return redirect()->route('posts.show', ['post' => $post]);
+                break;
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($post)
+    public function destroy($id)
     {
-
-        $post = Post::find($post);
+        $post = Post::find($id);
         $post->delete();
 
+        //게시글에 첨부된 이미지가 있으면 , 파일시스템에서도 삭제 해 줘야합니다.
+
+        if ($post->image) {
+            Storage::delete('public/images/' . $post->image);
+        }
         return redirect()->route('posts.index');
     }
+
+    // public function deleteImage($id)
+    // {
+    // }
 }
