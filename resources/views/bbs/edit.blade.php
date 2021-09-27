@@ -15,7 +15,7 @@
 
 
 
-            <form class="row g-3" method="post" enctype="multipart/form-data"
+            <form id="edit" class="row g-3" method="post" enctype="multipart/form-data"
                 action="{{ route('posts.update', ['post' => $post->id]) }}">
                 @method('patch')
                 @csrf
@@ -47,6 +47,8 @@
                 <div class="card-body">
                     @if ($post->image)
                         <img class="card-img-top" src="/storage/images/{{ $post->image }}" alt="Card image cap">
+                        <button class="btn btn-danger mt-2" name="action" value="delete">이미지 삭제</button>
+
                     @else
                         <span> 첨부 이미지 없음</span>
                     @endif
@@ -58,9 +60,15 @@
 
 
                 <div class="col-12 m-4">
-                    <button type="submit" class="btn btn-primary">save</button>
+                    <button type="submit" class="btn btn-primary" name="action" value="save">save</button>
                 </div>
             </form>
         </div>
     </x-slot>
 </x-app-layout>
+
+<script>
+    deleteImage() {
+
+    }
+</script>
