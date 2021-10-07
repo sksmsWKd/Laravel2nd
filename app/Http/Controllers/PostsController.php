@@ -211,7 +211,7 @@ class PostsController extends Controller
 
                 $post->save();
 
-                return redirect()->route('posts.show', ['post' => $post]);
+                return redirect()->back();
                 break;
         }
     }
