@@ -48,8 +48,46 @@
   </div>
 </template>
 <script>
+// export default {
+//   props: ["post,loginuser"],
+//   data() {
+//     return {
+//       like: false,
+//       userIdArray: [],
+//     };
+//   },
+//   methods: {
+//     likeClicked() {
+//       //서버에 like unlike 요청 보내기.....
+//       axios
+//         .post("/like/" + this.post.id)
+//         .then((res) => {
+//           console.log(res.data);
+//           this.like = !this.like;
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//       //csrf토큰 자동으로 보내줌
+//     },
+//     checkLikes() {
+//       //this.post.likes 가 현재 로그인한 사용자의 아이디를 포함하고있으면 true 아니면 false
+//       //즉 . this.loginuser를 포함하고 있으면 like = true, 아니면 like = false
+
+//       this.like = this.userIdArray.includes(this.loginuser);
+//     },
+//   },
+
+//   created() {
+//     this.userIdArray = this.post.likes.map((elem) => {
+//       return elem.id;
+//     });
+//     this.checkLikes();
+//   },
+// };
+
 export default {
-  props: ["post,loginuser"],
+  props: ["post", "loginuser"],
   data() {
     return {
       like: false,
@@ -58,26 +96,29 @@ export default {
   },
   methods: {
     likeClicked() {
-      //서버에 like unlike 요청 보내기.....
+      // 서버에 like unlike 요청 보내기.....
       axios
         .post("/like/" + this.post.id)
-        .then((response) => {
-          console.log(response.data);
+        .then((res) => {
+          console.log(res.data);
           this.like = !this.like;
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
       //csrf토큰 자동으로 보내줌
     },
     checkLikes() {
-      //this.post.likes 가 현재 로그인한 사용자의 아이디를 포함하고있으면 true 아니면 false
-      //즉 . this.loginuser를 포함하고 있으면 like = true, 아니면 like = false
-
+      /*
+            tiis.post.likes가 현재 로그인한
+            사용자의 아이디 즉, this.loginuser를 
+            포함하고 있으면 
+            like = true,
+            그렇지 않으면 like = false
+            */
       this.like = this.userIdArray.includes(this.loginuser);
     },
   },
-
   created() {
     this.userIdArray = this.post.likes.map((elem) => {
       return elem.id;
