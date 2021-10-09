@@ -134,7 +134,10 @@ class PostsController extends Controller
         //id 에 해당하는 Post 를 데이터베이스에서 인출하고
         // 그 놈을 상세보기에 view 로 전달.
 
-        $post = Post::find($id);
+        //eager loading (즉시로딩)
+
+        $post = Post::with('likes')->find($id);
+
 
         return view('bbs.show', ['post' => $post]);
         //pk 로 찾음.
@@ -232,4 +235,5 @@ class PostsController extends Controller
     // public function deleteImage($id)
     // {
     // }
+
 }

@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+
 class Post extends Model
 {
     use HasFactory;
 
     public function writer()
     {
-
-
-
 
 
         // User <-> Post 의 relationship
@@ -32,12 +31,19 @@ class Post extends Model
     }
 
 
+
+
     protected $fillable = [
         "title",
         "content",
         "user_id",
         "image"
-
         //parameter 로 많이많이와도, 여기 명시될 칼럼만 변경시켜줌
     ];
+
+    public function likes()
+    {
+        //N:M은 many로 표현한다.
+        return $this->belongsToMany(User::class);
+    }
 }
