@@ -30,10 +30,24 @@
         </header>
 
         <!-- Page Content -->
-        <main>
+        <main id="app">
             {{ $slot }}
+            <div id="app">
+
+            </div>
         </main>
     </div>
 </body>
+<script>
+    function confirmDelete() {
+        if (confirm("삭제??") == true) {
+            return true;
+            alert('삭제완료');
+        } else {
+            return false;
+            alert('삭제불가능');
+        }
+    }
+</script>
 
 </html>

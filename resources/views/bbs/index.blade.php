@@ -8,7 +8,14 @@
                 class="btn btn-info font-bold text-white justify-between hover:bg-red-700">
                 글쓰기
             </button>
+
         </div>
     </x-slot>
+
+
+
     <x-post-list :posts="$posts" />
+
+
+
 </x-app-layout>
