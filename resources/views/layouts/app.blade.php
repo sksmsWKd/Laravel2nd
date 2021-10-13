@@ -16,6 +16,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -39,6 +40,10 @@
     </div>
 </body>
 <script>
+    @if (@session('success'))
+        showSuccessMsg();
+    @endif
+
     function confirmDelete() {
         if (confirm("삭제??") == true) {
             return true;
@@ -47,6 +52,15 @@
             return false;
             alert('삭제불가능');
         }
+    }
+
+    function showSuccessMsg() {
+        Swal.fire({
+            icon: 'success',
+            title: 'success',
+            text: 'your post has been uploaded',
+            footer: '<a href="/">go home?</a>'
+        })
     }
 </script>
 
