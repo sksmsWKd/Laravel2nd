@@ -122,6 +122,9 @@ export default {
   created() {
     this.userIdArray = this.post.likes.map((elem) => {
       return elem.id;
+
+      // map 은, user 객체들의 id 값들만 모아서, 배열로 만들어 줌...
+      // map 은, js 에서 배열에 적용할수있는함수다
     });
     this.checkLikes();
   },
