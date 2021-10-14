@@ -45,5 +45,6 @@ class Post extends Model
     {
         //N:M은 many로 표현한다.
         return $this->belongsToMany(User::class);
+        //eager loading 은 컨트롤러가 해줄예정.
     }
 }

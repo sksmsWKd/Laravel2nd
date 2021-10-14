@@ -119,7 +119,10 @@ class PostsController extends Controller
         
         */
 
-        return redirect()->route('posts.index', ['posts' => $input]);
+        return redirect()->route('posts.index', ['posts' => $input])->with('success', "값의유무만중요");
+        // app.blade.php 에서 받음.
+        //@session 값이 넘어감.
+        //세션에 success 가 포함이면 뜬ㄷㅏ.
     }
 
     /**
