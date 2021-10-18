@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,5 @@ require __DIR__ . '/auth.php';
 
 
 Route::delete('/posts/images/{id}', [PostsController::class,]);
+
+// Route::post('/commentSave', [CommentsController::class, "store"]);
