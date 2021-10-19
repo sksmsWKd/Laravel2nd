@@ -63,12 +63,14 @@
 import CommentItem from "./CommentItem.vue";
 export default {
   components: { CommentItem },
+
   data() {
     return {
-      comments: [],
+      comments: [""],
     };
   },
   props: ["post", "loginuser"],
+
   methods: {
     getComments() {
       this.comments = ["1st", "2nd", "3rd", "4th", "5th"];
@@ -85,9 +87,12 @@ export default {
 
     saveComment() {
       $("#saveBtn").on("click", function () {
-        // this.comments = this.comments;
         console.log(document.getElementById("commentBody").value);
         // this.comments.unshift(document.getElementById("commentBody").value);
+
+        this.comments.push(document.getElementById("commentBody").value);
+        //? 이거왜안댐
+
         // axios.post("/commentSave");
       });
     },
