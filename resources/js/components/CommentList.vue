@@ -53,7 +53,7 @@
       </div>
     </div>
     <comment-item
-      v-for="(comment, index) in comments"
+      v-for="(comment, index) in commentlist"
       :key="index"
       :comment="comment"
     ></comment-item>
@@ -66,14 +66,27 @@ export default {
 
   data() {
     return {
-      comments: [""],
+      commentlist: [],
     };
   },
-  props: ["post", "loginuser"],
+  // created() {
+  //   this.getComments();
+  // },
+
+  props: ["post", "loginuser", "comments"],
 
   methods: {
     getComments() {
-      this.comments = ["1st", "2nd", "3rd", "4th", "5th"];
+      axios
+        .get("/commentlist")
+        .then((res) => {
+          // console.log(res.data);
+          this.commentlist = this.comments;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       // 서버에 현재 게시글의 댓글 리스트를 비동기적으로 요청
       // 즉 ,axios 를 이용해서 요청
       // 서버가 댓글 리스트 주면 , this.comments 에 할당.
@@ -86,14 +99,22 @@ export default {
     },
 
     saveComment() {
-      $("#saveBtn").on("click", function () {
+      $("#saveBtn").on("click", () => {
         console.log(document.getElementById("commentBody").value);
-        // this.comments.unshift(document.getElementById("commentBody").value);
 
-        this.comments.push(document.getElementById("commentBody").value);
-        //? 이거왜안댐
-
-        // axios.post("/commentSave");
+        $("#modalBox").modal("hide");
+        axios
+          .post("/commentSave/" + this.post.id, {
+            comment: document.getElementById("commentBody").value,
+          })
+          .then((res) => {
+            // console.log(res.data);
+            this.getComments();
+            console.log(this.commentlist);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       });
     },
   },

@@ -17,9 +17,7 @@
               </div>
               <div class="comment-text w-100">
                 <h6 class="font-medium">James Thomas</h6>
-                <span class="m-b-15 d-block"
-                  >This is awesome website. I would love to comeback again.
-                </span>
+                <span class="m-b-15 d-block">{{ comment.comment }} </span>
                 <div class="comment-footer">
                   <span class="text-muted float-right">April 14, 2019</span>
                   <button type="button" class="btn btn-cyan btn-sm">
@@ -28,7 +26,11 @@
                   <button type="button" class="btn btn-success btn-sm">
                     Publish
                   </button>
-                  <button type="button" class="btn btn-danger btn-sm">
+                  <button
+                    type="button"
+                    @click="deleteComment()"
+                    class="btn btn-danger btn-sm"
+                  >
                     Delete
                   </button>
                 </div>
@@ -48,5 +50,17 @@
 <script>
 export default {
   props: ["comment"],
+
+  methods: {
+    deleteComment() {
+      axios
+        .delete("/commentDelete/" + this.comment.id)
+        .then((res) => {
+          console.log(this.comment.id);
+          console.log("삭제완료 두번누르면에러남");
+        })
+        .catch();
+    },
+  },
 };
 </script>
