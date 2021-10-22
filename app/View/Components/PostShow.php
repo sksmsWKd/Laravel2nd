@@ -13,10 +13,11 @@ class PostShow extends Component
      */
 
     public $post;
+    public $comments;
 
-    public function __construct($post)
+    public function __construct($post, $comments)
     {
-        return $this->post = $post;
+        return ([$this->post = $post, $this->comments = $comments]);
     }
 
     /**
