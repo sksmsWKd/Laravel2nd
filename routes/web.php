@@ -30,4 +30,9 @@ require __DIR__ . '/auth.php';
 
 Route::delete('/posts/images/{id}', [PostsController::class,]);
 
-// Route::post('/commentSave', [CommentsController::class, "store"]);
+Route::post('/commentSave/{post}', [CommentsController::class, "store"]);
+
+
+Route::get('/commentlist', [CommentsController::class, "index"]);
+Route::delete('/commentDelete/{id}', [CommentsController::class, "destroy"]);
+Route::put('commentUpdate/{id}', [CommentsController::class, "update"]);

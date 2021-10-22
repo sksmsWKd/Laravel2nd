@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,8 @@ class PostsController extends Controller
         //라라벨의 collection 을 얻을떄 -> get()
 
         $posts = Post::latest()->paginate(10);
+
+
 
         // dd($posts);
         return view('bbs.index', ['posts' => $posts]);
@@ -140,9 +143,9 @@ class PostsController extends Controller
         //eager loading (즉시로딩)
 
         $post = Post::with('likes')->find($id);
+        $comments = Comment::all();
 
-
-        return view('bbs.show', ['post' => $post]);
+        return view('bbs.show', ['post' => $post, "comments" => $comments]);
         //pk 로 찾음.
 
     }
