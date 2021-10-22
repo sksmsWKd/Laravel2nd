@@ -48,7 +48,8 @@
         <div class="card " style="width: 30rem">
 
             <div class="card-body">
-                <comment-list :post="{{ $post }} " :loginuser="{{ auth()->user()->id }}"></comment-list>
+                <comment-list :comments="{{ $comments }}" :post="{{ $post }} "
+                    :loginuser="{{ auth()->user()->id }}"></comment-list>
             </div>
         </div>
     </div>

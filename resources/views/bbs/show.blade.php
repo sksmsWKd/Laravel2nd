@@ -15,5 +15,5 @@
     </x-slot>
 
 
-    <x-post-show :post="$post" />
+    <x-post-show :post="$post" :comments="$comments" />
 </x-app-layout>
