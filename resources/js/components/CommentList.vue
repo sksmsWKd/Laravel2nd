@@ -4,6 +4,7 @@
       댓글 불러오기
     </button>
     <!-- Button trigger modal -->
+
     <button
       @click="openWriteComment()"
       type="button"
@@ -18,7 +19,7 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="modalBox"
+      id="modalBox0"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -94,7 +95,7 @@ export default {
 
     openWriteComment() {
       $("#openModalBtn").on("click", function () {
-        $("#modalBox").modal("show");
+        $("#modalBox0").modal("show");
       });
     },
 
