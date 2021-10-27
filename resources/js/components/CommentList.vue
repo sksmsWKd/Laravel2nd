@@ -57,6 +57,7 @@
       v-for="(comment, index) in commentlist"
       :key="index"
       :comment="comment"
+      v-if="post.id == comment.post_id"
     ></comment-item>
   </div>
 </template>
@@ -79,9 +80,8 @@ export default {
   methods: {
     getComments() {
       axios
-        .get("/commentlist")
+        .get("/commentlist/" + this.post.id)
         .then((res) => {
-          // console.log(res.data);
           this.commentlist = this.comments;
         })
         .catch((err) => {

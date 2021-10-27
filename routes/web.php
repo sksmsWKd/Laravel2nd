@@ -33,6 +33,6 @@ Route::delete('/posts/images/{id}', [PostsController::class,]);
 Route::post('/commentSave/{post}', [CommentsController::class, "store"]);
 
 
-Route::get('/commentlist', [CommentsController::class, "index"]);
+Route::get('/commentlist/{postId}', [CommentsController::class, "index"]);
 Route::delete('/commentDelete/{id}', [CommentsController::class, "destroy"]);
 Route::put('commentUpdate/{id}', [CommentsController::class, "update"]);

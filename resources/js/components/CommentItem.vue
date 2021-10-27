@@ -16,7 +16,7 @@
                 />
               </div>
               <div class="comment-text w-100">
-                <h6 class="font-medium">James Thomas</h6>
+                <h6 class="font-medium">{{ comment.user_id }}</h6>
                 <span class="m-b-15 d-block">{{ comment.comment }} </span>
                 <div class="comment-footer">
                   <span class="text-muted float-right">April 14, 2019</span>
@@ -106,6 +106,8 @@ export default {
   props: ["comment"],
 
   mounted() {
+    /////////////
+
     console.log(this.comment.id);
     document
       .getElementById("modalBox")
@@ -117,6 +119,8 @@ export default {
     document
       .getElementById("updateComment")
       .setAttribute("id", "updateComment" + this.comment.id);
+
+    ////////////
   },
 
   methods: {
@@ -152,16 +156,16 @@ export default {
         $("#modalBox" + this.comment.id).modal("show");
       });
     },
-    getComments() {
-      axios
-        .get("/commentlist")
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    // getComments() {
+    //   axios
+    //     .get("/commentlist/" + this.comment.post_id)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
   },
 };
 
@@ -184,6 +188,6 @@ export default {
 // 부모뷰에서 쓰는 id를 자식뷰에서 쓰면
 // 꼬일까???
 //
-//4. 글id 맞는댓글만 나오게 해야함 해결할것. 시험끝나고하던지
+//4. 글-댓 idㅋㅋ
 </script>
 
