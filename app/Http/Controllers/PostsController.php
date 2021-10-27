@@ -63,19 +63,13 @@ class PostsController extends Controller
 
         $request->validate(['title' => 'required|min:3', 'content' => 'required|min:10']);
 
-
         $fileName = null;
         if ($request->hasFile('image')) {
 
             $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
-
-
-
             // dd($request->file('image'));
             $path = $request->file('image')->storeAs('public/images', $fileName);
-
             //strpos strposs
-
             // dd($path);
         }
 
