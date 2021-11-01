@@ -22,9 +22,10 @@ class CommentsController extends Controller
     public function index($postId)
     {
 
-        $comments = Comment::where('post_id', '=', $postId)->latest()->get();
 
-        return  $comments;
+
+
+        return   Comment::with('user')->where('post_id', '=', $postId)->latest()->get();
         /*
             order by created_at desc;
 

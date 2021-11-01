@@ -9,14 +9,17 @@ class Comment extends Model
 {
     use HasFactory; //trait
 
-    protected $fillable = ['comment' => 'required|max:100',];
+    protected $fillable = [
+        'comment' => 'required|max:100',
+
+    ];
 
     public function user()
     {
         //comment 입장에서 연결된 
         //belongsTo 관계메서드를 통해 연결시키면 ㅇ
 
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "user_id");
         /*
             select * from users
             where id = $this.user.id
