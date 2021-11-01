@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       commentlist: [],
+      tempcomment: [],
     };
   },
   // created() {
@@ -82,7 +83,9 @@ export default {
       axios
         .get("/commentlist/" + this.post.id)
         .then((res) => {
-          this.commentlist = this.comments;
+          // this.comments = res.data;
+          this.tempcomment = this.comments;
+          this.commentlist = this.tempcomment;
         })
         .catch((err) => {
           console.log(err);
@@ -102,16 +105,19 @@ export default {
     saveComment() {
       $("#saveBtn").on("click", () => {
         console.log(document.getElementById("commentBody").value);
+        $("#modalBox0").modal("hide");
 
-        $("#modalBox").modal("hide");
         axios
           .post("/commentSave/" + this.post.id, {
             comment: document.getElementById("commentBody").value,
           })
           .then((res) => {
             // console.log(res.data);
-            this.getComments();
-            console.log(this.commentlist);
+            // console.log(this.commentlist);
+
+            this.commentlist = res.data;
+            // this.getComments();
+            // console.log(this.commentlist);
           })
           .catch((err) => {
             console.log(err);

@@ -16,8 +16,8 @@
                 />
               </div>
               <div class="comment-text w-100">
-                <h6 class="font-medium">{{ comment.user_id }}</h6>
-                <span class="m-b-15 d-block">{{ comment.comment }} </span>
+                <h6 class="font-medium">{{ commentlist.user_id }}</h6>
+                <span class="m-b-15 d-block">{{ commentlist.comment }} </span>
                 <div class="comment-footer">
                   <span class="text-muted float-right">April 14, 2019</span>
                   <!-- Button trigger modal -->
@@ -36,7 +36,7 @@
                     @click="deleteComment()"
                     class="btn btn-danger btn-sm"
                   >
-                    {{ comment.id }}
+                    {{ commentlist.id }}
                     Delete
                   </button>
 
@@ -81,7 +81,7 @@
                       id="saveBtn"
                     >
                       update comment
-                      {{ comment.id }}
+                      {{ commentlist.id }}
                     </button>
                     <button
                       type="button"
@@ -105,20 +105,27 @@
 export default {
   props: ["comment"],
 
+  data() {
+    return {
+      commentlist: [],
+    };
+  },
   mounted() {
     /////////////
+    this.commentlist = this.comment;
+    /////////////
 
-    console.log(this.comment.id);
+    console.log(this.commentlist.id);
     document
       .getElementById("modalBox")
-      .setAttribute("id", "modalBox" + this.comment.id);
+      .setAttribute("id", "modalBox" + this.commentlist.id);
 
     document
       .getElementById("editBtn")
-      .setAttribute("id", "editBtn" + this.comment.id);
+      .setAttribute("id", "editBtn" + this.commentlist.id);
     document
       .getElementById("updateComment")
-      .setAttribute("id", "updateComment" + this.comment.id);
+      .setAttribute("id", "updateComment" + this.commentlist.id);
 
     ////////////
   },
@@ -126,25 +133,28 @@ export default {
   methods: {
     deleteComment() {
       axios
-        .delete("/commentDelete/" + this.comment.id)
+        .delete("/commentDelete/" + this.commentlist.id)
         .then((res) => {
-          console.log(this.comment.id);
+          console.log(res.data);
+          console.log(this.commentlist.id);
           console.log("삭제완료 두번누르면에러남");
+          this.commentlist = res.data;
+          //어떻게 댓글 껍데기 지우기 ㅇㅇ
         })
         .catch();
     },
 
     updateComment() {
       axios
-        .put("/commentUpdate/" + this.comment.id, {
+        .put("/commentUpdate/" + this.commentlist.id, {
           commentInfo: document.getElementById(
-            "updateComment" + this.comment.id
+            "updateComment" + this.commentlist.id
           ).value,
         })
         .then((res) => {
           console.log(res);
-          console.log(this.comment.id);
-          $("#modalBox" + this.comment.id).modal("hide");
+          console.log(this.commentlist.id);
+          $("#modalBox" + this.commentlist.id).modal("hide");
 
           console.log(res.data);
         })
@@ -152,8 +162,8 @@ export default {
     },
 
     openUpdateComment() {
-      $("#editBtn" + this.comment.id).on("click", () => {
-        $("#modalBox" + this.comment.id).modal("show");
+      $("#editBtn" + this.commentlist.id).on("click", () => {
+        $("#modalBox" + this.commentlist.id).modal("show");
       });
     },
     // getComments() {
