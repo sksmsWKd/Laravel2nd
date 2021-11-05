@@ -6,7 +6,7 @@
             <div class="card-body">
                 @if ($post->image)
                     <img class="card-img-top" src="/storage/images/{{ $post->image }}" alt="Card image cap">
-                @else
+                @elseif ($post->image ==null)
                     <span> 첨부 이미지 없음</span>
                 @endif
             </div>
@@ -26,19 +26,25 @@
             </ul>
 
             <div class="card-body flex justify-center ">
-                <a class="mr-20" href="{{ route('posts.edit', ['post' => $post->id]) }}">수정하기</a>
-                <form onsubmit="return confirmDelete()" id="form" method="POST"
-                    action="{{ route('posts.destroy', ['post' => $post->id]) }}">
-                    @method('delete')
-                    @csrf
-                    {{-- 서버에서 처리. html 을 웹브라우저에 보냄. --}}
+                @can('update', $post)
+                    <a class="mr-20" href="{{ route('posts.edit', ['post' => $post->id]) }}">수정하기</a>
+                @endcan
 
-                    <button type="submit">
-                        삭제하기
+                @can('delete', $post)
+                    <form onsubmit="return confirmDelete()" id="form" method="POST"
+                        action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                        @method('delete')
+                        @csrf
+                        {{-- 서버에서 처리. html 을 웹브라우저에 보냄. --}}
 
-                    </button>
+                        <button type="submit">
+                            삭제하기
 
-                </form>
+                        </button>
+
+                    </form>
+                @endcan
+
             </div>
 
 
