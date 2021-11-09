@@ -11,6 +11,7 @@ class Comment extends Model
 
     protected $fillable = [
         'comment' => 'required|max:100',
+        'user_id', 'post_id'
 
     ];
 
@@ -19,7 +20,7 @@ class Comment extends Model
         //comment 입장에서 연결된 
         //belongsTo 관계메서드를 통해 연결시키면 ㅇ
 
-        return $this->belongsTo(User::class, "user_id");
+        return $this->belongsTo(User::class, "user_id", "id");
         /*
             select * from users
             where id = $this.user.id

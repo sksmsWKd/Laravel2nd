@@ -150,10 +150,18 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
 
+
+
         $post = Post::find($id);
+        if ($request->user()->cannot('update', $post)) {
+            abort(403);
+        }
+        // $this->authorize('update',$post)
+        // postpolicy 의 업데이트 메서드 
+
         return view('bbs.edit', ['post' => $post]);
     }
 
@@ -170,13 +178,17 @@ class PostsController extends Controller
 
     public function update(Request $request, $post)
     {
+
+
+
+
         switch ($request->input('action')) {
             case 'save':
                 $request->validate(['title' => 'required|min:3', 'content' => 'required|min:10']);
                 //required 는 있어야합니다.
 
                 $post = Post::find($post);
-
+                $this->authorize('update', $post);
                 // $post->title = $request->input['title'];
                 $post->title = $request->title;
                 //둘다 같음.
@@ -205,7 +217,7 @@ class PostsController extends Controller
 
             case 'delete':
                 $post = Post::find($post);
-
+                $this->authorize('delete', $post);
                 Storage::delete('public/images/' . $post->image);
 
                 $post->title = $request->title;
@@ -221,6 +233,7 @@ class PostsController extends Controller
 
     public function destroy($id)
     {
+
         $post = Post::find($id);
         $post->delete();
 

@@ -22,10 +22,13 @@ class CommentsController extends Controller
     public function index($postId)
     {
 
+        $comments = Comment::with('user')->where('post_id', $postId)->latest()->paginate(5);
 
 
+        //지연로딩 필요한 이유
+        //클라이언트에서는 $comments 가 갈때, with 안해주면 user와 연관된 정보가 안감
 
-        return   Comment::with('user')->where('post_id', '=', $postId)->latest()->get();
+        return $comments;
         /*
             order by created_at desc;
 
@@ -49,6 +52,8 @@ class CommentsController extends Controller
 
         $comments->save();
 
+
+
         return $comments;
 
 
@@ -70,8 +75,11 @@ class CommentsController extends Controller
 
     {
         $comments = Comment::find($id);
+        $this->authorize('update', $comments);
         $comments->comment = $request->commentInfo;
         $comments->save();
+
+
 
         return $comments;
 
@@ -84,9 +92,17 @@ class CommentsController extends Controller
     }
     public function destroy($id)
     {
-        Comment::find($id)->delete();
 
-        $comments = Comment::all();
-        return $comments;
+        $comments = Comment::find($id);
+        $this->authorize('delete', $comments);
+        $comments->delete();
+
+
+        return 1;
     }
 }
+
+
+
+//loginuser props로 댓글 권한 관리 -> policy만들기
+// vuefile 에서도 수정 삭제 버튼 권한.
