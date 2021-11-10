@@ -1,8 +1,9 @@
 <template>
   <div>
     <button @click="getComments()" class="btn btn-primary">
-      댓글 불러오기
+      댓글 불러오기 글번호 {{ post.id }}
     </button>
+
     <!-- Button trigger modal -->
 
     <button
@@ -36,17 +37,16 @@
             ></button>
           </div>
           <div class="modal-body">
-            <input type="text" id="commentBody" value="댓글을 입력해 주세요." />
+            <input
+              type="text"
+              id="modalInput"
+              value="댓글을 입력해 주세요."
+              v-model="comment"
+            />
           </div>
           <div class="modal-footer">
-            <button @click="saveComment()" class="btn btn-primary" id="saveBtn">
-              Save changes
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
+            <button @click="saveComment()" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
               Close
             </button>
           </div>
@@ -54,43 +54,57 @@
       </div>
     </div>
     <comment-item
-      v-for="(comment, index) in commentlist"
-      :key="index"
+      v-for="(comment, id) in comments.data"
+      :key="id"
       :comment="comment"
-      v-if="post.id == comment.post_id"
+      :getget="getComments"
+      :loginuser="loginuser"
     ></comment-item>
+
+    <pagination
+      @pageClicked="getPage($event)"
+      v-if="comments.data != null"
+      :links="comments.links"
+    />
   </div>
 </template>
 <script>
 import CommentItem from "./CommentItem.vue";
+import Pagination from "./Pagination.vue";
 export default {
-  components: { CommentItem },
+  components: { CommentItem, Pagination },
 
   data() {
     return {
-      commentlist: [],
-      tempcomment: [],
+      comments: [],
+      comment: "",
     };
   },
-  // created() {
-  //   this.getComments();
-  // },
 
-  props: ["post", "loginuser", "comments"],
+  props: ["post", "loginuser"],
 
   methods: {
-    getComments() {
+    getPage(url) {
       axios
-        .get("/commentlist/" + this.post.id)
+        .get(url)
         .then((res) => {
-          // this.comments = res.data;
-          this.tempcomment = this.comments;
-          this.commentlist = this.tempcomment;
+          this.comments = res.data;
         })
         .catch((err) => {
           console.log(err);
         });
+    },
 
+    getComments() {
+      axios
+        .get("/commentlist/" + this.post.id)
+        .then((res) => {
+          this.comments = res.data;
+          console.log(this.comments.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       // 서버에 현재 게시글의 댓글 리스트를 비동기적으로 요청
       // 즉 ,axios 를 이용해서 요청
       // 서버가 댓글 리스트 주면 , this.comments 에 할당.
@@ -103,26 +117,18 @@ export default {
     },
 
     saveComment() {
-      $("#saveBtn").on("click", () => {
-        console.log(document.getElementById("commentBody").value);
-        $("#modalBox0").modal("hide");
-
-        axios
-          .post("/commentSave/" + this.post.id, {
-            comment: document.getElementById("commentBody").value,
-          })
-          .then((res) => {
-            // console.log(res.data);
-            // console.log(this.commentlist);
-
-            this.commentlist = res.data;
-            // this.getComments();
-            // console.log(this.commentlist);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
+      axios
+        .post("/commentSave/" + this.post.id, {
+          comment: this.comment,
+        })
+        .then((res) => {
+          this.getComments();
+          this.comment = "";
+          $("#modalBox0").modal("hide");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

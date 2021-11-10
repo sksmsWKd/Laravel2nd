@@ -16,10 +16,10 @@
                 />
               </div>
               <div class="comment-text w-100">
-                <h6 class="font-medium">{{ commentlist.user_id }}</h6>
-                <span class="m-b-15 d-block">{{ commentlist.comment }} </span>
-                <div class="comment-footer">
-                  <span class="text-muted float-right">April 14, 2019</span>
+                <h6 class="font-medium">{{ comment.user.name }}</h6>
+                <span class="m-b-15 d-block">{{ comment.comment }} </span>
+
+                <div v-if="comment.user_id == loginuser" class="comment-footer">
                   <!-- Button trigger modal -->
                   <button
                     @click="openUpdateComment()"
@@ -36,12 +36,12 @@
                     @click="deleteComment()"
                     class="btn btn-danger btn-sm"
                   >
-                    {{ commentlist.id }}
                     Delete
                   </button>
 
                   <!-- Modal -->
                 </div>
+                <span class="text-muted float-right">{{ comment.created_at }}</span>
               </div>
             </div>
             <!-- Comment Row -->
@@ -57,9 +57,7 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      Modal title
-                    </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                     <button
                       type="button"
                       class="btn-close"
@@ -68,20 +66,14 @@
                     ></button>
                   </div>
                   <div class="modal-body">
-                    <input
-                      type="text"
-                      id="updateComment"
-                      value="댓글을 입력해 주세요."
-                    />
+                    <input type="text" id="updateComment" value="댓글을 입력해 주세요." />
                   </div>
+
                   <div class="modal-footer">
-                    <button
-                      @click="updateComment()"
-                      class="btn btn-primary"
-                      id="saveBtn"
-                    >
+                    <button @click="updateComment()" class="btn btn-primary" id="saveBtn">
                       update comment
-                      {{ commentlist.id }}
+
+                      {{ comment.id }}
                     </button>
                     <button
                       type="button"
@@ -103,42 +95,29 @@
 </template>
 <script>
 export default {
-  props: ["comment"],
+  props: ["comment", "getget", "getPage", "loginuser"],
 
   data() {
-    return {
-      commentlist: [],
-    };
+    return {};
   },
   mounted() {
-    /////////////
-    this.commentlist = this.comment;
-    /////////////
+    console.log(this.comment.id);
 
-    console.log(this.commentlist.id);
-    document
-      .getElementById("modalBox")
-      .setAttribute("id", "modalBox" + this.commentlist.id);
+    document.getElementById("modalBox").setAttribute("id", "modalBox" + this.comment.id);
 
-    document
-      .getElementById("editBtn")
-      .setAttribute("id", "editBtn" + this.commentlist.id);
+    document.getElementById("editBtn").setAttribute("id", "editBtn" + this.comment.id);
     document
       .getElementById("updateComment")
-      .setAttribute("id", "updateComment" + this.commentlist.id);
-
-    ////////////
+      .setAttribute("id", "updateComment" + this.comment.id);
   },
 
   methods: {
     deleteComment() {
       axios
-        .delete("/commentDelete/" + this.commentlist.id)
+        .delete("/commentDelete/" + this.comment.id)
         .then((res) => {
-          console.log(res.data);
-          console.log(this.commentlist.id);
           console.log("삭제완료 두번누르면에러남");
-          this.commentlist = res.data;
+          this.getget();
           //어떻게 댓글 껍데기 지우기 ㅇㅇ
         })
         .catch();
@@ -146,36 +125,21 @@ export default {
 
     updateComment() {
       axios
-        .put("/commentUpdate/" + this.commentlist.id, {
-          commentInfo: document.getElementById(
-            "updateComment" + this.commentlist.id
-          ).value,
+        .put("/commentUpdate/" + this.comment.id, {
+          commentInfo: document.getElementById("updateComment" + this.comment.id).value,
         })
         .then((res) => {
-          console.log(res);
-          console.log(this.commentlist.id);
-          $("#modalBox" + this.commentlist.id).modal("hide");
-
-          console.log(res.data);
+          $("#modalBox" + this.comment.id).modal("hide");
+          this.getget();
         })
         .catch((err) => {});
     },
 
     openUpdateComment() {
-      $("#editBtn" + this.commentlist.id).on("click", () => {
-        $("#modalBox" + this.commentlist.id).modal("show");
+      $("#editBtn" + this.comment.id).on("click", () => {
+        $("#modalBox" + this.comment.id).modal("show");
       });
     },
-    // getComments() {
-    //   axios
-    //     .get("/commentlist/" + this.comment.post_id)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
   },
 };
 
@@ -200,4 +164,3 @@ export default {
 //
 //4. 글-댓 idㅋㅋ
 </script>
-
