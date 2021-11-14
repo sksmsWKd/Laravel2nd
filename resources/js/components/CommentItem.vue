@@ -112,6 +112,7 @@ export default {
   },
 
   methods: {
+    // childzzz(){     this.$parent.zzzz(); },
     deleteComment() {
       axios
         .delete("/commentDelete/" + this.comment.id)
@@ -144,23 +145,14 @@ export default {
 };
 
 //질문할거..
-//1. jquery 로 $(id).on("click") 이후 함수배정하나
-//버튼에 @click 해서 js에서 함수만드나 같은거아닌가.
+//1. jquery 로 $(id).on("click") 이후 함수배정하나 버튼에 @click 해서 js에서 함수만드나 같은거아닌가.
 
-//2. 자식컴퍼넌트에서 모달만들고
-//부모에서 리스트 랜더링하니까 자식컴퍼넌트의 모달id가
-//중복되서 많이생겨서 제일 첫번째 컴퍼넌트의 댓글만
-// 변경되던데,
-//  document
-//      .getElementById("editBtn")
-//  .setAttribute("id", "editBtn" + this.comment.id);
-// 이렇게 컴퍼넌트에서 변동이필요한 html태그마다
-// id붙이니까 너무 비효율적인것 같다. 어떤방식이좋을까
+// 2. 자식컴퍼넌트에서 모달만들고 부모에서 리스트 랜더링하니까 자식컴퍼넌트의 모달id가 중복되서 많이생겨서 제일 첫번째 컴퍼넌트의 댓글만
+// 변경되던데,  document      .getElementById("editBtn")  .setAttribute("id",
+// "editBtn" + this.comment.id); 이렇게 컴퍼넌트에서 변동이필요한 html태그마다 id붙이니까 너무 비효율적인것 같다.
+// 어떤방식이좋을까
 //
-//3. 같은 blade.php 파일 내에서
-// 부모뷰, 자식뷰 여러개 있는데
-// 부모뷰에서 쓰는 id를 자식뷰에서 쓰면
-// 꼬일까???
+//3. 같은 blade.php 파일 내에서 부모뷰, 자식뷰 여러개 있는데 부모뷰에서 쓰는 id를 자식뷰에서 쓰면 꼬일까???
 //
 //4. 글-댓 idㅋㅋ
 </script>

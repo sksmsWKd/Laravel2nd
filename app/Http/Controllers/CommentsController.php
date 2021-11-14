@@ -76,6 +76,7 @@ class CommentsController extends Controller
     {
         $comments = Comment::find($id);
         $this->authorize('update', $comments);
+
         $comments->comment = $request->commentInfo;
         $comments->save();
 
