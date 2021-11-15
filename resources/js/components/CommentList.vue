@@ -1,5 +1,5 @@
 <template>
-  <div id="cboxc">
+  <div class="cboxc">
     <div>
       <button @click="getComments()" class="btn btn-primary">
         댓글 불러오기 글번호
@@ -115,6 +115,10 @@ export default {
     openWriteComment() {
       $("#openModalBtn").on("click", function () {
         $("#modalBox0").modal("show");
+
+        $("#modalBox0").on("shown.bs.modal", function () {
+          $("#modalInput").focus();
+        });
       });
     },
 
@@ -125,6 +129,9 @@ export default {
           this.getComments();
           this.comment = "";
           $("#modalBox0").modal("hide");
+          swal({
+            title: "save",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -137,8 +144,11 @@ export default {
 };
 </script>
 <style>
-#cboxc {
+/* .cboxc {
   position: sticky;
   top: 0;
 }
+.modalBox0 {
+  z-index: 0;
+} */
 </style>

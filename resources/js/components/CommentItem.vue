@@ -119,6 +119,9 @@ export default {
         .then((res) => {
           console.log("삭제완료 두번누르면에러남");
           this.getget();
+          swal({
+            title: "delete",
+          });
           //어떻게 댓글 껍데기 지우기 ㅇㅇ
         })
         .catch();
@@ -139,6 +142,10 @@ export default {
     openUpdateComment() {
       $("#editBtn" + this.comment.id).on("click", () => {
         $("#modalBox" + this.comment.id).modal("show");
+
+        $("#modalBox").on("shown.bs.modal", function () {
+          $("#modalBox").focus();
+        });
       });
     },
   },
@@ -156,3 +163,9 @@ export default {
 //
 //4. 글-댓 idㅋㅋ
 </script>
+
+<style lang="scss">
+.modalBox {
+  z-index: 1;
+}
+</style>
